@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tặng Nguyễn Nam</title>
+    <style>
+        /* Toàn bộ giao diện */
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: radial-gradient(circle, #1a1a2e, #16213e, #0f3460);
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Container chứa chữ */
+        .content {
+            text-align: center;
+            transition: all 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
+        /* Hiệu ứng chữ chuyển động */
+        h1 {
+            font-size: 5rem;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            margin: 0;
+            background: linear-gradient(to right, #ff00cc, #3333ff, #00ffcc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient-shift 3s infinite linear;
+            text-shadow: 0 10px 30px rgba(255, 0, 204, 0.3);
+        }
+
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        /* Hiệu ứng mờ dần khi chuyển slide */
+        .fade-out {
+            opacity: 0;
+            transform: scale(0.5) rotate(10deg);
+            filter: blur(10px);
+        }
+
+        .fade-in {
+            animation: bounceIn 1s forwards;
+        }
+
+        @keyframes bounceIn {
+            0% { opacity: 0; transform: scale(0.3); }
+            50% { opacity: 1; transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); }
+        }
+
+        /* Hiệu ứng các hạt bay bay cho màu mè */
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* Nút bấm hướng dẫn */
+        .hint {
+            position: absolute;
+            bottom: 20px;
+            font-size: 0.9rem;
+            opacity: 0.6;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+    </style>
+</head>
+<body onclick="nextStep()">
+
+    <div class="particles" id="particles"></div>
+
+    <div class="content" id="main-content">
+        <h1 id="text-display">TẶNG CHO NGUYỄN NAM</h1>
+    </div>
+
+    <div class="hint" id="hint">Click chuột hoặc chạm màn hình để tiếp tục...</div>
+
+    <script>
+        let step = 1;
+
+        function nextStep() {
+            const content = document.getElementById('main-content');
+            const text = document.getElementById('text-display');
+            const hint = document.getElementById('hint');
+
+            if (step === 1) {
+                // Hiệu ứng biến mất cho slide 1
+                content.classList.add('fade-out');
+                
+                setTimeout(() => {
+                    text.innerText = "Hello Nguyễn Nam nha cái địt cụ mày!";
+                    text.style.background = "linear-gradient(to right, #ff9a9e, #fad0c4, #ffecd2)";
+                    text.style.webkitBackgroundClip = "text";
+                    
+                    // Hiệu ứng xuất hiện cho slide 2
+                    content.classList.remove('fade-out');
+                    content.classList.add('fade-in');
+                    hint.style.display = 'none'; // Ẩn hướng dẫn sau khi bấm
+                }, 800);
+                
+                step = 2;
+            }
+        }
+
+        // Tạo hiệu ứng hạt bay cho sinh động
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.style.position = 'absolute';
+                particle.style.width = Math.random() * 5 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.background = 'white';
+                particle.style.borderRadius = '50%';
+                particle.style.top = Math.random() * 100 + 'vh';
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.opacity = Math.random();
+                particle.style.boxShadow = '0 0 10px white';
+                
+                container.appendChild(particle);
+                
+                // Chuyển động hạt
+                animateParticle(particle);
+            }
+        }
+
+        function animateParticle(p) {
+            const duration = Math.random() * 3000 + 2000;
+            const targetY = Math.random() * 100 - 50;
+            
+            p.animate([
+                { transform: 'translateY(0)' },
+                { transform: `translateY(${targetY}px)` }
+            ], {
+                duration: duration,
+                direction: 'alternate',
+                iterations: Infinity,
+                easing: 'ease-in-out'
+            });
+        }
+
+        createParticles();
+    </script>
+</body>
+</html>
